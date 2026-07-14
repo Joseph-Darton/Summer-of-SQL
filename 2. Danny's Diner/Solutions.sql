@@ -141,7 +141,7 @@ join menu as m on s.product_id=m.product_id
 join members as mem on mem.customer_id=s.customer_id
 group by s.customer_id
 
---Join all the things--
+-- Join all the things --
 select
 s.customer_id,
 order_date,
@@ -155,3 +155,26 @@ end as member
 from sales as s
 join menu as m on s.product_id=m.product_id
 left join members as mem on mem.customer_id=s.customer_id
+
+-- Rank all the things --
+with cte as (
+select
+s.customer_id,
+order_date,
+product_name,
+price,
+case 
+when join_date is null then 'n'
+when order_date<join_date then 'n'
+else 'y'
+end as member
+from sales as s
+join menu as m on s.product_id=m.product_id
+left join members as mem on mem.customer_id=s.customer_id
+  )
+
+select *,
+case
+when member='n' then null
+else rank() over (partition by customer_id,member order by order_date asc) end as ranking
+from cte
