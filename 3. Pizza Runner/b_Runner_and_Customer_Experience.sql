@@ -13,7 +13,19 @@ start_of_week
 from runner_signups
 group by start_of_week
 order by start_of_week
--- 2. What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pickup the order?
+-- 2. What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pickup the order? ***
+select
+runner_id,
+date_trunc('minute',(
+  AVG(
+    to_timestamp(pickup_time, 'YYYY-MM-DD HH24:MI:SS')- order_time)
+  )
+          ) as duration
+from runner_orders as r join customer_orders as c
+on c.order_id=r.order_id
+where pickup_time != 'null'
+group by runner_id
+
 -- 3. Is there any relationship between the number of pizzas and how long the order takes to prepare?
 -- 4. What was the average distance travelled for each customer?
 -- 5. What was the difference between the longest and shortest delivery times for all orders?
