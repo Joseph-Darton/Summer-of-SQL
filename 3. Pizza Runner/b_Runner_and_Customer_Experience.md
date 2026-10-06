@@ -98,7 +98,7 @@ Result:
         group by pizzas
         order by pizzas desc
 ```
-
+Result:
 | pizzas | avg_prep_time |
 | ------ | ------------- |
 | 3      | 29.28         |
@@ -122,7 +122,7 @@ join runner_orders as r
 on o.order_id=r.order_id
 group by customer_id
 ```
-
+Result:
 | customer_id | avg_distance_km |
 | ----------- | --------------- |
 | 101         | 20.0            |
@@ -151,7 +151,7 @@ group by customer_id
     AS difference_mins
     from runner_orders
 ```
-
+Result:
 | difference_mins |
 | --------------- |
 | 30              |
@@ -172,7 +172,7 @@ group by customer_id
     where distance <> 'null'
     order by runner_id
 ```
-
+Result:
 | runner_id | order_id | speed_km_hr |
 | --------- | -------- | ----------- |
 | 1         | 1        | 37.5        |
@@ -210,7 +210,7 @@ group by customer_id
     from runner_orders
     group by runner_id
 ```
-
+Result:
 | runner_id | orders | successful_orders | success_percent |
 | --------- | ------ | ----------------- | --------------- |
 | 3         | 2      | 1                 | 50              |
