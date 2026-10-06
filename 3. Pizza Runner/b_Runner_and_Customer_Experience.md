@@ -112,6 +112,18 @@ Result:
 ---
 
 4. What was the average distance travelled for each customer?
+select
+customer_id,
+ROUND(
+  AVG(
+  NULLIF(REGEXP_REPLACE(distance, '[^0-9.]', '', 'g'), '')::numeric
+  )
+  ,1) as avg_distance_km
+
+from customer_orders as o
+join runner_orders as r
+on o.order_id=r.order_id
+group by customer_id
 5. What was the difference between the longest and shortest delivery times for all orders?
 6. What was the average speed for each runner for each delivery and do you notice any trend for these values?
 7. What is the successful delivery percentage for each runner?
