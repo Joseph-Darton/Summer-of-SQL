@@ -15,6 +15,7 @@ from runner_signups
 group by start_of_week
 order by start_of_week
 ```
+Result:
 
 | runners | start_of_week          |
 | ------- | ---------------------- |
@@ -45,7 +46,7 @@ join customer_orders c
 where pickup_time <> 'null'
 group by runner_id;
 ```
-
+Result:
 | runner_id | avg_minutes_to_pickup |
 | --------- | --------------------- |
 | 3         | 10.47                 |
