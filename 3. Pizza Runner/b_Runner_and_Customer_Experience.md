@@ -134,5 +134,85 @@ group by customer_id
 ---
 
 5. What was the difference between the longest and shortest delivery times for all orders?
+```sql
+    select
+    MAX(
+      NULLIF(
+    REGEXP_REPLACE(duration, '[^0-9.]', '', 'g'),
+    ''
+    )::numeric
+    ) -
+    MIN(
+      NULLIF(
+    REGEXP_REPLACE(duration, '[^0-9.]', '', 'g'),
+    ''
+    )::numeric
+    )
+    AS difference_mins
+    from runner_orders
+```
+
+| difference_mins |
+| --------------- |
+| 30              |
+
+---
+
 6. What was the average speed for each runner for each delivery and do you notice any trend for these values?
+```sql
+    select
+    runner_id,
+    order_id,
+    ROUND(
+      NULLIF(REPLACE(distance, 'km', ''), 'null')::numeric /
+    (NULLIF(REGEXP_REPLACE(duration, '[^0-9.]', '', 'g'), '')::numeric/60)
+      ,1)
+    AS speed_km_hr
+    from runner_orders
+    where distance <> 'null'
+    order by runner_id
+```
+
+| runner_id | order_id | speed_km_hr |
+| --------- | -------- | ----------- |
+| 1         | 1        | 37.5        |
+| 1         | 2        | 44.4        |
+| 1         | 3        | 40.2        |
+| 1         | 10       | 60.0        |
+| 2         | 7        | 60.0        |
+| 2         | 8        | 93.6        |
+| 2         | 4        | 35.1        |
+| 3         | 5        | 40.0        |
+
+---
+
 7. What is the successful delivery percentage for each runner?
+```sql
+    select
+    runner_id,
+    count(order_id) as orders,
+    sum(
+      case pickup_time
+      when 'null' then 0
+      else 1
+      end
+      )::numeric as successful_orders,
+    round(
+      (sum(
+      case pickup_time
+      when 'null' then 0
+      else 1
+      end
+      )::numeric/
+      count(order_id))*100
+      ,0)
+      as success_percent
+    from runner_orders
+    group by runner_id
+```
+
+| runner_id | orders | successful_orders | success_percent |
+| --------- | ------ | ----------------- | --------------- |
+| 3         | 2      | 1                 | 50              |
+| 2         | 4      | 3                 | 75              |
+| 1         | 4      | 4                 | 100             |
