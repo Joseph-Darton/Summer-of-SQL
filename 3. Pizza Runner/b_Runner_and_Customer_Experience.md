@@ -16,7 +16,6 @@ group by start_of_week
 order by start_of_week
 ```
 Result:
-
 | runners | start_of_week          |
 | ------- | ---------------------- |
 | 2       | 2021-01-01 00:00:00+00 |
@@ -46,6 +45,7 @@ join customer_orders c
 where pickup_time <> 'null'
 group by runner_id;
 ```
+
 Result:
 | runner_id | avg_minutes_to_pickup |
 | --------- | --------------------- |
@@ -97,6 +97,7 @@ Result:
     order by pizzas desc
 ```
 
+Result:
 | order_id | pizzas | avg_minutes_to_pickup |
 | -------- | ------ | --------------------- |
 | 4        | 3      | 29.28                 |
